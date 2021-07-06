@@ -33,6 +33,12 @@ export interface RegisterData {
    * @type {string}
    * @memberof RegisterData
    */
+  msg: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RegisterData
+   */
 }
 
 /**
@@ -51,6 +57,25 @@ export interface LoginData {
    *
    * @type {string}
    * @memberof LoginData
+   */
+  password: string;
+}
+/**
+ *
+ * @export
+ * @interface Credentials
+ */
+export interface Credentials {
+  /**
+   *
+   * @type {string}
+   * @memberof Credentials
+   */
+  email: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Credentials
    */
   password: string;
 }

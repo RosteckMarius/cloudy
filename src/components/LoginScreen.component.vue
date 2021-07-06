@@ -18,7 +18,7 @@
           <v-spacer />
 
           <router-link to="/register">
-            <v-btn dark @click="testLogin"> Sign in </v-btn>
+            <v-btn dark @click="login"> Sign in </v-btn>
           </router-link>
 
           <v-spacer />
@@ -40,6 +40,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { LoginData } from "@/api/api";
 import axios from "axios";
+import AuthService from "@/services/AuthService";
 
 @Component
 export default class LoginComponent extends Vue {
@@ -47,24 +48,22 @@ export default class LoginComponent extends Vue {
     email: "",
     password: "",
   };
-
-  testLogin() {
-    axios.post("https://cloudy.tijazcloud.de/users/login", {
-      email: this.form.email,
-      password: this.form.password,
-    });
-  }
-
-  getLoginData() {
-    console.log(this.form.email);
-    console.log(this.form.password);
-
-    this.$emit(this.form.email);
-    this.$emit(this.form.password);
-    return {
-      email: this.form.email,
-      password: this.form.password,
-    };
+  msg: any;
+  async login() {
+    try {
+      const credentials = {
+        email: this.form.email,
+        password: this.form.password,
+      };
+      const response = await AuthService.login(credentials);
+      this.msg = response.msg;
+      const token = response.token;
+      const user = response.user;
+      await this.$store.dispatch("login", { token, user });
+      await this.$router.push("/about");
+    } catch (error) {
+      this.msg = error.response.data.msg;
+    }
   }
 }
 </script>

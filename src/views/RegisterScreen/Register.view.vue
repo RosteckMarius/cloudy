@@ -36,6 +36,7 @@
           </v-card-text>
           <v-text-field
             v-model="form.password_repeat"
+            :rules="passwordsIdentical"
             dense
             outlined
             required
@@ -46,7 +47,7 @@
           <v-card-actions>
             <v-spacer />
             <router-link class="justify-center" to="/register">
-              <v-btn dark @click="testPost"> Sign up</v-btn>
+              <v-btn dark @click="signUp"> Sign up</v-btn>
             </router-link>
             <v-spacer />
           </v-card-actions>
@@ -59,9 +60,10 @@
 </template>
 
 <script lang="ts">
-import { RegisterData } from "@/api/api";
+import { Credentials, RegisterData } from "@/api/api";
 import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
+import AuthService from "@/services/AuthService.ts";
 
 @Component
 export default class Register extends Vue {
@@ -70,7 +72,14 @@ export default class Register extends Vue {
     email: "",
     password: "",
     password_repeat: "",
+    msg: "",
   };
+
+  passwordsIdentical = [
+    (content: string) =>
+      (!!content && content) == this.form.password_repeat ||
+      "Passwords do not match",
+  ];
 
   emailPatternRules = [
     (content: string) =>
@@ -79,40 +88,32 @@ export default class Register extends Vue {
       "Ungültige E-Mail Adresse",
   ];
 
+  async signUp() {
+    const cred: Credentials = {
+      email: this.form.email,
+      password: this.form.password,
+    };
+    try {
+      const response = await AuthService.signUp(cred);
+      this.form.msg = response.msg;
+    } catch (error) {
+      console.log(error);
+      this.form.msg = error.response;
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   sendFeedback() {
     console.log(this.form);
   }
 
-  testPost() {
-    if (this.form.password == this.form.password_repeat) {
-      axios.post("https://cloudy.tijazcloud.de/users/register", {
-        email: this.form.email,
-        password: this.form.password,
-      });
-    } else {
-      console.log("Passwörter stimmen nicht überein");
-    }
-  }
-
-  testGet() {
-    axios
-      .get("https://cloudy.tijazcloud.de/hello", {
-        headers: {
-          Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJpdXMucm9zdGVja0BnbWFpbC5jb20iLCJpc3MiOiJjbG91ZHkiLCJleHAiOjE2MjU1Njc2MDB9.elIiYOuymAKtHSEdS_0DVyCJfLUP8WnyU8tHWwb2Xvo",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods":
-            "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  async testGet() {
+    axios.get("https://cloudy.tijazcloud.de/users/hello", {
+      headers: {
+        Authorization:
+          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJpdXMucm9zdGVja0BnbWFpbC5jb20iLCJpc3MiOiJjbG91ZHkiLCJleHAiOjE2MjU2MDgwMDR9.kKh_KGTNJrURDHdsKmUA4J6vKSvsfaTdvY7goKyGsOg",
+      },
+    });
   }
 }
 </script>
