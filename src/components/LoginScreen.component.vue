@@ -18,7 +18,7 @@
           <v-spacer />
 
           <router-link to="/register">
-            <v-btn dark @click="login"> Sign in </v-btn>
+            <v-btn color="secondary" @click="login"> Sign in </v-btn>
           </router-link>
 
           <v-spacer />

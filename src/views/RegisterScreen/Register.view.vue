@@ -1,6 +1,19 @@
 <template>
   <v-container style="width: fit-content">
     <v-col>
+      <v-col cols="12 pb-0">
+        <v-img
+          :src="require('../../assets/logo3.png')"
+          class="my-3"
+          contain
+          height="200"
+        />
+        <v-col class="mb-4">
+          <h2 class="font-weight-regular">WELCOME TO CLOUDY</h2>
+        </v-col>
+      </v-col>
+    </v-col>
+    <v-row>
       <v-spacer />
 
       <v-card class="mb-2">
@@ -47,7 +60,7 @@
           <v-card-actions>
             <v-spacer />
             <router-link class="justify-center" to="/register">
-              <v-btn dark @click="signUp"> Sign up</v-btn>
+              <v-btn color="secondary" @click="signUp"> Sign up</v-btn>
             </router-link>
             <v-spacer />
           </v-card-actions>
@@ -55,7 +68,7 @@
       </v-card>
 
       <v-spacer />
-    </v-col>
+    </v-row>
   </v-container>
 </template>
 

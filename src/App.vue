@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <v-app-bar app dark>
+    <v-app-bar app color="#primary">
       <div class="d-flex align-center">
         <DropdownMenu></DropdownMenu>
 
         <v-img
-          :src="require('./assets/Name.png')"
+          :src="require('./assets/Name2.png')"
           contain
           min-width="100"
           to="/"

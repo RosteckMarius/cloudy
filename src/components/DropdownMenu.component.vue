@@ -2,8 +2,8 @@
   <div class="text-center">
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on">
-          <v-icon>mdi-cog</v-icon>
+        <v-btn icon v-bind="attrs" v-on="on">
+          <v-icon color="secondary">mdi-cog</v-icon>
         </v-btn>
       </template>
       <v-list>
@@ -13,7 +13,7 @@
           :to="item.path"
         >
           <v-list-item-icon>
-            <v-icon>
+            <v-icon color="secondary">
               {{ item.icon }}
             </v-icon>
           </v-list-item-icon>
